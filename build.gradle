@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.1.7.RELEASE' apply false
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE' apply false
+    id 'io.franzbecker.gradle-lombok' version '3.1.0' apply false
+}
+
+ext {
+    springBootVersion = '2.1.7.RELEASE'
+    lombokVersion = '1.18.8'
+}
+
+allprojects {
+    group 'com.griddynamics.ngolovin'
+    version '1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'io.franzbecker.gradle-lombok'
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
+        }
+        dependencies {
+            dependency "org.projectlombok:lombok:${lombokVersion}"
+        }
+    }
+}
+
+configure(subprojects.findAll { it.name.startsWith('ms-') }) {
+    apply plugin: 'org.springframework.boot'
+}

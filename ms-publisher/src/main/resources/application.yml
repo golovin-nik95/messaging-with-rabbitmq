@@ -1,0 +1,11 @@
+mwr:
+  publisher:
+    rabbitmq:
+      exchange: ex.example
+      routing-key: rk.example
+
+spring:
+  rabbitmq:
+    addresses: localhost:5672,localhost:5673,localhost:5674
+    username: guest
+    password: guest

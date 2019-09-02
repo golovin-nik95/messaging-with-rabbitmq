@@ -1,0 +1,73 @@
+version: '3'
+services:
+  rabbit1:
+    image: rabbitmq:management
+    container_name: rabbit1
+    hostname: rabbit1
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=ha-cluster
+      - RABBITMQ_NODENAME=rabbit1
+    networks:
+      - messaging-with-rabbitmq
+    volumes:
+      - ./rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  rabbit2:
+    image: rabbitmq:management
+    container_name: rabbit2
+    hostname: rabbit2
+    depends_on:
+      - rabbit1
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=ha-cluster
+      - RABBITMQ_NODENAME=rabbit2
+    networks:
+      - messaging-with-rabbitmq
+    volumes:
+      - ./rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
+    ports:
+      - 5673:5672
+      - 15673:15672
+
+  rabbit3:
+    image: rabbitmq:management
+    container_name: rabbit3
+    hostname: rabbit3
+    depends_on:
+      - rabbit1
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=ha-cluster
+      - RABBITMQ_NODENAME=rabbit3
+    networks:
+      - messaging-with-rabbitmq
+    volumes:
+      - ./rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
+    ports:
+      - 5674:5672
+      - 15674:15672
+
+  publisher:
+    container_name: publisher
+    build: ms-publisher
+    depends_on:
+      - rabbit1
+    networks:
+      - messaging-with-rabbitmq
+
+  listener:
+    container_name: listener
+    build: ms-listener
+    depends_on:
+      - rabbit1
+    networks:
+      - messaging-with-rabbitmq
+
+networks:
+  messaging-with-rabbitmq:
+    driver: bridge

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="messaging-with-rabbitmq.listener.main" target="11" />
+      <module name="messaging-with-rabbitmq.listener.test" target="11" />
+      <module name="messaging-with-rabbitmq.publisher.main" target="11" />
+      <module name="messaging-with-rabbitmq.publisher.test" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
