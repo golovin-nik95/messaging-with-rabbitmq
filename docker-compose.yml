@@ -2,7 +2,7 @@ version: '3'
 services:
   rabbit1:
     image: rabbitmq:management
-    container_name: rabbit1
+    container_name: mwr-rabbit1
     hostname: rabbit1
     environment:
       - RABBITMQ_ERLANG_COOKIE=ha-cluster
@@ -18,7 +18,7 @@ services:
 
   rabbit2:
     image: rabbitmq:management
-    container_name: rabbit2
+    container_name: mwr-rabbit2
     hostname: rabbit2
     depends_on:
       - rabbit1
@@ -36,7 +36,7 @@ services:
 
   rabbit3:
     image: rabbitmq:management
-    container_name: rabbit3
+    container_name: mwr-rabbit3
     hostname: rabbit3
     depends_on:
       - rabbit1
@@ -53,7 +53,7 @@ services:
       - 15674:15672
 
   publisher:
-    container_name: publisher
+    container_name: mwr-publisher
     build: ms-publisher
     depends_on:
       - rabbit1
@@ -61,7 +61,7 @@ services:
       - messaging-with-rabbitmq
 
   listener:
-    container_name: listener
+    container_name: mwr-listener
     build: ms-listener
     depends_on:
       - rabbit1
